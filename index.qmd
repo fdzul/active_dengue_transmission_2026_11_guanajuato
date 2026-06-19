@@ -21,6 +21,7 @@ source("~/Library/CloudStorage/Dropbox/r_developments/r_dashboards/netlify/1.2.p
 estado <- "11"
 localidad1 <- "Guanajuato"
 localidad2 <- "Leon de Aldama"
+localidad3 <- "Silao de la Victoria"
 ```
 
 
@@ -156,6 +157,24 @@ z |>
 ```
 :::
 
+::: grid-card
+
+```{r distribucion_localidad3,echo=FALSE}
+z |>
+    #dplyr::filter(IDE_EDA_ANO <= 12 | IDE_EDA_ANO >= 65) |>
+    dplyr::mutate(onset = FEC_INI_SIGNOS_SINT) |>
+    dplyr::select(ANO, long, lat, onset) |>
+    dplyr::mutate(x = long,
+                  y = lat) |>
+    sf::st_as_sf(coords = c("x", "y"),
+                 crs = 4326) |>
+    mp_dengue_cases(yrs = 2026,
+                    locality = localidad3,
+                    cve_edo = estado)
+
+
+```
+:::
 
 
 
@@ -196,6 +215,22 @@ z |>
 ```
 :::
 
+::: grid-card
+```{r heatmap_localidad3,echo=FALSE}
+z |>
+    #dplyr::filter(IDE_EDA_ANO <= 12 | IDE_EDA_ANO >= 65) |>
+    dplyr::mutate(onset = FEC_INI_SIGNOS_SINT) |>
+    dplyr::select(ANO, long, lat, onset) |>
+    dplyr::mutate(x = long,
+                  y = lat) |>
+    sf::st_as_sf(coords = c("x", "y"),
+                 crs = 4326) |>
+  mp_heatmap(yrs = 2026,
+           cve_edo = estado,
+           locality = localidad3)
+
+```
+:::
 
 </div><div class="columna">
 <div class="column-header"> Cadenas de Transmisión</div>
@@ -228,6 +263,16 @@ z |>
 
 ```
 :::
+
+::: grid-card
+```{r chains_localidad3,echo=FALSE}
+rgeomex::extract_locality(cve_edo = estado,
+                          locality = localidad3) |>
+  mapview::mapview()
+
+```
+:::
+
 
 </div>
 :::::::::::::::::::::
